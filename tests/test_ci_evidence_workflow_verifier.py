@@ -46,7 +46,7 @@ class WorkflowVerifierTests(unittest.TestCase):
         return VERIFIER.run(self.repo, self.baseline)
 
     def test_integrated_workflows_preserve_all_reporting_cases(self):
-        """A valid baseline retains 18 workflow files and 20 preservation calls."""
+        """A valid baseline retains 18 workflow files and 23 preservation calls."""
         report = self.report()
         self.assertTrue(report["passed"], report["failed_checks"])
         self.assertEqual(report["archive_workflow_count"], 18)
@@ -59,8 +59,10 @@ class WorkflowVerifierTests(unittest.TestCase):
         for prefix in ("preservation-invocation:", "existing-preservation-step-unchanged:"):
             # Experimental SMP adds one call. KVM adds one workflow/call, while
             # H05 retains one workflow with distinct S5 and POWER-system calls.
+            # Code coverage reporting adds three calls in ci.yml (Rust, Python,
+            # JavaScript), each counted by both prefixes.
             self.assertEqual(sum(check["name"].startswith(prefix)
-                                 for check in report["checks"]), 20)
+                                 for check in report["checks"]), 23)
         self.assertEqual(sum(check["name"].startswith("report-shell:")
                              for check in report["checks"]), 28)
         self.assertEqual(sum(check["name"].startswith("package-check:")

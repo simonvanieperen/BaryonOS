@@ -35,3 +35,6 @@ __pycache__/
 
 # Lokale Graphify-uitvoer; alleen de gehoste MCP is in gebruik (AGENTS.md)
 /graphify-out/
+# Code coverage output (host-quality CI job and local developer runs)
+.coverage
+.coverage.*

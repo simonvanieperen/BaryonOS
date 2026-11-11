@@ -1,0 +1,8 @@
+{
+  "reporter": ["cobertura"],
+  "report-dir": "build/coverage-raw/node/report",
+  "exclude": [
+    "**/tests/**",
+    "**/*.test.mjs"
+  ]
+}

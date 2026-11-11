@@ -1,0 +1,15 @@
+[run]
+branch = False
+parallel = True
+data_file = build/coverage-raw/python/.coverage
+source =
+    tools
+    .agents/skills/os-dev/scripts
+
+[report]
+omit =
+    tools/tests/*
+    .agents/skills/os-dev/tests/*
+
+[xml]
+output = build/coverage-raw/python/cobertura.xml

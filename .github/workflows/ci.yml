@@ -61,8 +61,14 @@ jobs:
         shell: bash
         run: |
           rustup toolchain install 1.90.0 --profile minimal
-          rustup component add --toolchain 1.90.0 rustfmt clippy
+          rustup component add --toolchain 1.90.0 rustfmt clippy llvm-tools
           rustup target add --toolchain 1.90.0 x86_64-unknown-none x86_64-unknown-uefi
+      - name: Coverage tooling (cargo-llvm-cov, coverage.py, c8)
+        shell: bash
+        run: |
+          cargo +1.90.0 install cargo-llvm-cov --version 0.9.1 --locked
+          python3 -m pip install --disable-pip-version-check --only-binary=:all: 'coverage==7.11.3'
+          npm install --global c8@10.1.3
       - name: Cache Cargo downloads
         id: cargo-downloads
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
@@ -90,25 +96,34 @@ jobs:
         # resolves the workspace closure, including update-core's dependencies.
         run: cargo +1.90.0 fetch --locked --manifest-path Cargo.toml
       - name: Python syntax and DocumentSession host tests
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
         run: |
+          mkdir -p build/coverage-raw/python
           python3 -m compileall -q tools tests userspace/tests experiments/quantum/native experiments/quantum/native/job .agents/skills/os-dev
           python3 -B -m unittest discover -s tests -p 'test_ci_evidence*.py'
-          python3 -B -m unittest discover -s tests -p 'test_ci_workflows.py'
-          python3 -m unittest discover -s tests -p 'test_document_session_*.py'
-          python3 -m unittest discover -s tests -p 'test_volume_*.py'
-          python3 -m unittest discover -s tests -p 'test_system_*.py'
-          python3 -m unittest discover -s tools/tests -p 'test_*.py'
+          coverage run --parallel-mode -m unittest discover -s tests -p 'test_ci_workflows.py'
+          coverage run --parallel-mode -m unittest discover -s tests -p 'test_document_session_*.py'
+          coverage run --parallel-mode -m unittest discover -s tests -p 'test_volume_*.py'
+          coverage run --parallel-mode -m unittest discover -s tests -p 'test_system_*.py'
+          coverage run --parallel-mode -m unittest discover -s tools/tests -p 'test_*.py'
           python3 .agents/skills/os-dev/scripts/validate_skill.py
-          python3 -m unittest discover -s .agents/skills/os-dev/tests -p 'test_*.py'
+          coverage run --parallel-mode -m unittest discover -s .agents/skills/os-dev/tests -p 'test_*.py'
       - name: Runner and QEMU harness host tests
         shell: bash
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
         run: |
           for pattern in test_common.py test_preflight.py test_build_paths.py test_guest_harness.py test_m1_artifact_binding.py 'test_m6c_*.py'; do
-            python3 -B -m unittest discover -s tests -p "$pattern"
+            coverage run --parallel-mode -m unittest discover -s tests -p "$pattern"
           done
+      - name: Combine Python coverage and emit cobertura
+        run: |
+          coverage combine
+          coverage xml
       - name: Root Rust host tests
         run: |
-          cargo +1.90.0 test --locked -p boot-protocol -p elf-loader-core -p kernel-core -p capability-core -p virtio-core -p ui-core -p virtio-blk-driver -p block-protocol -p object-core -p catalog-core -p volume-core -p keyring-core -p virtio-rng-driver -p virtio-net-driver -p driver-core -p pci-core -p update-core -p update-tool
+          cargo +1.90.0 llvm-cov --locked -p boot-protocol -p elf-loader-core -p kernel-core -p capability-core -p virtio-core -p ui-core -p virtio-blk-driver -p block-protocol -p object-core -p catalog-core -p volume-core -p keyring-core -p virtio-rng-driver -p virtio-net-driver -p driver-core -p pci-core -p update-core -p update-tool --cobertura --output-path build/coverage-raw/rust-cobertura.xml
           cargo +1.90.0 clippy --locked -p boot-protocol -p elf-loader-core -p kernel-core -p capability-core -p virtio-core -p ui-core -p virtio-blk-driver -p block-protocol -p object-core -p catalog-core -p volume-core -p keyring-core -p virtio-rng-driver -p virtio-net-driver -p driver-core -p pci-core -p update-core -p update-tool --all-targets -- -D warnings
           cargo +1.90.0 fmt --all -- --check
       - name: SDK tests and lint
@@ -157,9 +172,16 @@ jobs:
           cargo +1.90.0 fmt --manifest-path experiments/quantum/job-protocol/Cargo.toml --all -- --check
           python3 experiments/quantum/native/job/build.py --output-dir /tmp/nieuw-os-qsim-job-build --target-dir /tmp/nieuw-os-qsim-job-target
       - name: Product prototype tests
+        env:
+          NODE_V8_COVERAGE: build/coverage-raw/node/raw
         run: node --test --test-isolation=none ui/prototype/tests/*.test.mjs
       - name: NAS policy, storage and transport tests
+        env:
+          NODE_V8_COVERAGE: build/coverage-raw/node/raw
         run: node --test --test-isolation=none services/nas/tests/*.test.mjs
+      - name: Combine Node coverage and emit cobertura
+        shell: bash
+        run: c8 report --temp-directory build/coverage-raw/node/raw --reporter cobertura --report-dir build/coverage-raw/node/report
       - name: Native M6c regression build
         run: python3 -B tools/build.py --kernel-feature milestone-m6c
       - name: Progress consistency and clean tree
@@ -170,6 +192,30 @@ jobs:
           python3 tools/progress.py --check
           git status --porcelain
           test -z "$(git status --porcelain)"
+      - name: Preserve Rust coverage artifact
+        if: ${{ always() }}
+        uses: ./.github/actions/preserve-evidence
+        with:
+          name: coverage-report-rust
+          job-status: ${{ job.status }}
+          if-no-files-found: error
+          path: build/coverage-raw/rust-cobertura.xml
+      - name: Preserve Python coverage artifact
+        if: ${{ always() }}
+        uses: ./.github/actions/preserve-evidence
+        with:
+          name: coverage-report-python
+          job-status: ${{ job.status }}
+          if-no-files-found: error
+          path: build/coverage-raw/python/cobertura.xml
+      - name: Preserve JavaScript coverage artifact
+        if: ${{ always() }}
+        uses: ./.github/actions/preserve-evidence
+        with:
+          name: coverage-report-javascript
+          job-status: ${{ job.status }}
+          if-no-files-found: error
+          path: build/coverage-raw/node/report/cobertura-coverage.xml
       - name: Cache diagnostics (not test evidence)
         if: ${{ always() }}
         shell: bash
@@ -344,3 +390,60 @@ jobs:
             build/ci-sdk-denied/run/native-sdk-app-denied-*/result.json
             build/ci-sdk-denied/run/native-sdk-app-denied-*/serial.txt
             build/ci-sdk-denied/run/native-sdk-app-denied-*/stderr.txt
+
+  upload-coverage-rust:
+    name: upload-coverage-rust
+    needs: host-quality
+    if: ${{ !cancelled() && needs.host-quality.result == 'success' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      code-quality: write
+    steps:
+      - name: Download coverage artifact
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: coverage-report-rust-reports
+      - uses: actions/upload-code-coverage@2b21a77928be8d5168c2b9581a67f2adbebacc52 # v1.4.4
+        with:
+          file: build/coverage-raw/rust-cobertura.xml
+          language: Rust
+          label: code-coverage-agent
+
+  upload-coverage-python:
+    name: upload-coverage-python
+    needs: host-quality
+    if: ${{ !cancelled() && needs.host-quality.result == 'success' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      code-quality: write
+    steps:
+      - name: Download coverage artifact
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: coverage-report-python-reports
+      - uses: actions/upload-code-coverage@2b21a77928be8d5168c2b9581a67f2adbebacc52 # v1.4.4
+        with:
+          file: build/coverage-raw/python/cobertura.xml
+          language: Python
+          label: code-coverage-agent
+
+  upload-coverage-javascript:
+    name: upload-coverage-javascript
+    needs: host-quality
+    if: ${{ !cancelled() && needs.host-quality.result == 'success' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      code-quality: write
+    steps:
+      - name: Download coverage artifact
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: coverage-report-javascript-reports
+      - uses: actions/upload-code-coverage@2b21a77928be8d5168c2b9581a67f2adbebacc52 # v1.4.4
+        with:
+          file: build/coverage-raw/node/report/cobertura-coverage.xml
+          language: JavaScript
+          label: code-coverage-agent

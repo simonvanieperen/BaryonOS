@@ -51,6 +51,18 @@ Run at least the targeted tests, formatting, and linting relevant to the change.
 
 A test that was not run is not a passing test. The current repository ruleset requires the `host-quality` and `qemu-smoke` checks before `main` can be updated.
 
+### Code coverage
+
+The `host-quality` job collects line coverage for the host-side test suites and
+publishes Cobertura reports to GitHub's code coverage API on `main` and pull
+requests. Run the same instrumented commands locally when useful:
+
+- Rust (main workspace members): `cargo llvm-cov -p <package> ... --cobertura --output-path build/coverage-raw/rust-cobertura.xml` (requires `cargo install cargo-llvm-cov` and the `llvm-tools` rustup component).
+- Python (`tools`, `.agents/skills/os-dev/scripts`): `coverage run --parallel-mode -m unittest discover ...`, then `coverage combine && coverage xml`. Settings live in `.coveragerc`.
+- Node.js (`ui/prototype`, `services/nas`): `c8 node --test ui/prototype/tests/*.test.mjs services/nas/tests/*.test.mjs`. Settings live in `.c8rc.json`.
+
+Coverage output is written under `build/coverage-raw/`, which is already ignored by Git.
+
 ## Pull requests
 
 - Work on a small, reviewable branch.

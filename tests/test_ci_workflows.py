@@ -370,7 +370,7 @@ class WorkflowContractTests(unittest.TestCase):
                 )
 
     def test_public_prs_keep_minimal_token_permissions(self):
-        """Allow narrowly scoped writes only for CodeQL and orphan-run cleanup."""
+        """Allow narrowly scoped writes only for CodeQL, orphan-run cleanup and coverage uploads."""
         for path, workflow in self.workflows.items():
             with self.subTest(path=path):
                 self.assertNotIn("pull_request_target", workflow["on"])
@@ -397,6 +397,14 @@ class WorkflowContractTests(unittest.TestCase):
                     ".github/workflows/clear-stale-actions.yml", "cancel-orphans"
                 ):
                     self.assertEqual(permissions, {"actions": "write"})
+                elif (path, job_id) in (
+                    (".github/workflows/ci.yml", "upload-coverage-rust"),
+                    (".github/workflows/ci.yml", "upload-coverage-python"),
+                    (".github/workflows/ci.yml", "upload-coverage-javascript"),
+                ):
+                    self.assertEqual(
+                        permissions, {"contents": "read", "code-quality": "write"}
+                    )
                 else:
                     self.assertTrue(
                         set(permissions.values()) <= {"read", "none"}
