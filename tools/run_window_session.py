@@ -477,14 +477,22 @@ def validate_build(frozen: str, feature: str = FEATURE, scale: int = 1) -> dict:
     return manifest
 
 
+# Harness deadlines, not latency budgets. 1800 s is the preregistered bound of
+# the 1280x720 route (docs/implementation/NATIVE-CLIPBOARD.md). The 200% route
+# renders four times the pixels and needs about 1480 s on fast and about 2150 s
+# on slower standard hosted runners (ADR-WINDOW-SCALE2-DEADLINE-20261112).
+MAX_TIMEOUT_BY_SCALE = {1: 1800, 2: 2700}
+
+
 def run(*, timeout: int, bios_rom: Path, vga_rom: Path, smoke: bool = False,
         recovery_handshake: bool = False, clipboard: bool = False, workspace: bool = False,
         switcher: bool = False, scale: int = 1, session_route: bool = False,
         library: bool = False, library_parent: Path | None = None,
         calculator_recall: bool = False, calculator_undo: bool = False,
         calculator_result: bool = False) -> dict:
-    if not 30 <= timeout <= 1800:
-        raise ValueError("Timeout must be bounded 30..1800 seconds")
+    limit = MAX_TIMEOUT_BY_SCALE.get(scale, MAX_TIMEOUT_BY_SCALE[1])
+    if not 30 <= timeout <= limit:
+        raise ValueError(f"Timeout must be bounded 30..{limit} seconds at scale {scale}")
     if smoke and recovery_handshake or (clipboard or workspace) and (smoke or recovery_handshake):
         raise ValueError("Clipboard/workspace require the full native gate; choose one diagnostic mode")
     if switcher and (smoke or recovery_handshake or clipboard or workspace) or scale != 1 and not (switcher or workspace):

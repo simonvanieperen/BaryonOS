@@ -99,6 +99,20 @@ class WindowRunnerTests(unittest.TestCase):
         self.assertIn("--switcher", result.stdout)
         self.assertIn("200%", result.stdout)
 
+    def test_harness_deadline_is_bounded_per_scale(self):
+        # Scale 1 keeps the preregistered 1800 s; only scale 2 may use up to 2700 s.
+        with self.assertRaisesRegex(ValueError, r"30\.\.1800 seconds at scale 1"):
+            window.run(timeout=1801, bios_rom=None, vga_rom=None, clipboard=True, workspace=True)
+        with self.assertRaisesRegex(ValueError, r"30\.\.2700 seconds at scale 2"):
+            window.run(timeout=2701, bios_rom=None, vga_rom=None, clipboard=True,
+                       workspace=True, scale=2)
+        with self.assertRaisesRegex(ValueError, r"30\.\.1800 seconds at scale 3"):
+            window.run(timeout=2700, bios_rom=None, vga_rom=None, scale=3)
+        # 2700 s passes the deadline check at scale 2 and reaches the next guard.
+        with self.assertRaisesRegex(ValueError, "require the full native gate"):
+            window.run(timeout=2700, bios_rom=None, vga_rom=None, smoke=True,
+                       clipboard=True, scale=2)
+
     def test_scale200_evidence_requires_the_complete_workspace_gate(self):
         self.assertTrue(window.full_scale200_gate(2, True, False, False))
         for arguments in (

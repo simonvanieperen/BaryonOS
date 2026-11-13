@@ -139,11 +139,15 @@ jobs:
       - name: Actual input, unmasked pixels, isolation, crash recovery and disk
         id: native-gate
         run: |
+          # Scale 1 keeps the preregistered 1800 s; scale 2 needs a wider
+          # harness deadline on slower hosted runners (ADR-WINDOW-SCALE2-DEADLINE-20261112).
+          gate_timeout=1800
+          if [ "$NOS_WINDOW_SCALE" = 2 ]; then gate_timeout=2700; fi
           python3 -B -u tools/run_window_session.py \
             --clipboard \
             --workspace \
             --scale "$NOS_WINDOW_SCALE" \
-            --timeout 1800 \
+            --timeout "$gate_timeout" \
             --bios-rom /usr/share/seabios/bios-256k.bin \
             --vga-rom /usr/share/seabios/vgabios-stdvga.bin \
             2>&1 | tee "$CI_EVIDENCE_DIR/native-gate.txt"

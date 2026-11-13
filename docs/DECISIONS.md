@@ -5,6 +5,37 @@ This document distinguishes the decisions and authority of the project owner
 from those of the executing roles. Source quotations retain their original
 wording and speaker.
 
+## ADR-WINDOW-SCALE2-DEADLINE-20261112 — Per-scale harness deadline for the native window gate
+
+Status: accepted, 12 November 2026, to repair `main` after #210.
+
+**Context:** after #210 the 200% `native-window-session (2)` gate failed twice
+on `main` `49f80b1e` with "G0 QMP exceeded the shared deadline before send".
+The tree `17de3cba` was byte-identical to PR head `682b2eb`, where the same
+profile passed. The QEMU bundle, runner image and command were also
+identical. Every logged phase was uniformly about 1.45x slower on the failing
+runners: boot 93 s against 65.5 s, `document-menu-high-contrast` 1797 s
+against 1229 s. The 132-phase route needs about 1480 s on a fast standard
+hosted runner and about 2150 s on a slower one, so the shared 1800 s deadline
+cannot hold on all of them.
+
+**Decision:** the runner bounds its harness deadline per scale.
+
+- Scale 1 keeps 1800 s, the bound preregistered for the 1280×720 route in
+  `docs/implementation/NATIVE-CLIPBOARD.md`.
+- Scale 2 may use up to 2700 s, and the CI gate uses that value only for the
+  scale-2 clipboard/workspace run.
+- The switcher part gates and the library walkthroughs keep 1800 s.
+
+**Consequences:** this is a harness deadline, not a latency budget. No phase,
+pixel comparison or assertion is removed, and the per-phase timings stay in
+the evidence. Runner tests pin both bounds, and mutations of either bound fail
+them. A slow runner can now spend up to 15 more minutes on scale 2, still
+within the 110-minute job limit.
+
+**Revise when:** measured interaction budgets for the 200% route are
+preregistered, or the route is split into shards that each fit the 1800 s bound.
+
 ## ADR-CI-SECURITY-ALERTS-20261111 — Public-safe summary of open security alerts
 
 Status: accepted, 11 November 2026, on the project owner's instruction to make

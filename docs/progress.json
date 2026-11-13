@@ -3,12 +3,12 @@
   "rubric_version": 1,
   "assessment": {
     "date": "2026-11-13",
-    "source_commit": "7bf578d4cb326abd79190ec8d780f5216814baab",
+    "source_commit": "a60425abd67001165228b124b2c761e605121e22",
     "assessment_basis": "source_commit",
-    "branch": "ccr-db0981b4-k5rug1",
-    "task": "Public-safe summary of open Dependabot and code-scanning alerts (ADR-CI-SECURITY-ALERTS-20261111)",
+    "branch": "ccr-cf45024e-q0nrg9",
+    "task": "Per-scale harness deadline for the 200% native window gate (ADR-WINDOW-SCALE2-DEADLINE-20261112)",
     "previous_score": 41,
-    "summary": "41/100 stays 41/100: CI and security tooling only. A scheduled read-only workflow summarises open Dependabot alerts with publicly derivable fields and code-scanning alerts as aggregate counts; no OS functionality, native gate or product criterion changes. Merged with main 7bf578d4 (#313, #320; agent guidance and prototype fixes, no criterion change)."
+    "summary": "41/100 stays 41/100. CI harness hardening only: scale 1 keeps the preregistered 1800 s bound and scale 2 may use 2700 s on slower hosted runners, after two scale-2 timeouts on main 49f80b1e (run 43137766280); no phase or assertion changes and no product criterion changes. Merged with main a60425ab (#313, #315, #320; no criterion change)."
   },
   "tracks": [
     {
