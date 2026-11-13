@@ -694,6 +694,45 @@ cp -- "$ACTIONLINT_FIXTURE" "$output"
             with self.subTest(built=changed):
                 self.assertFalse(ignored(changed))
 
+    def test_merge_hold_is_an_unfiltered_live_read_required_gate(self):
+        """The hold must always report, read live state and never be skipped."""
+        path = ".github/workflows/merge-hold.yml"
+        workflow = self.workflows[path]
+        trigger = workflow["on"]["pull_request"]
+        self.assertEqual(set(workflow["on"]), {"pull_request"})
+        self.assertEqual(
+            set(trigger["types"]),
+            {"opened", "synchronize", "reopened", "labeled", "unlabeled"},
+        )
+        for key in ("paths", "paths-ignore", "branches", "branches-ignore"):
+            self.assertNotIn(key, trigger)
+        self.assertNotIn("defaults", workflow)
+        self.assertEqual(list(workflow["jobs"]), ["merge-hold"])
+        job = workflow["jobs"]["merge-hold"]
+        self.assertEqual(job["name"], "merge-hold")
+        self.assertEqual(
+            job["permissions"],
+            {"contents": "read", "issues": "read", "pull-requests": "read"},
+        )
+        for key in ("if", "needs", "continue-on-error", "strategy", "defaults",
+                    "container", "services"):
+            self.assertNotIn(key, job)
+        checkout, decide = job["steps"]
+        self.assertTrue(checkout["uses"].startswith("actions/checkout@"))
+        self.assertEqual(checkout["with"], {"persist-credentials": "false"})
+        for step in (checkout, decide):
+            for key in ("if", "continue-on-error", "working-directory"):
+                self.assertNotIn(key, step)
+        self.assertNotIn("uses", decide)
+        self.assertEqual(decide["shell"], "bash")
+        self.assertEqual(decide["run"].strip(), "python3 -B tools/merge_hold.py")
+        self.assertEqual(decide["env"], {
+            "GH_TOKEN": "${{ github.token }}",
+            "REPO": "${{ github.repository }}",
+            "PR_NUMBER": "${{ github.event.pull_request.number }}",
+            "HEAD_SHA": "${{ github.event.pull_request.head.sha }}",
+        })
+
     def test_only_artifact_uploads_can_tolerate_errors(self):
         """Storage failure may be optional; failed builds, tests and collectors are not."""
         for path, job_id, job in self.jobs():

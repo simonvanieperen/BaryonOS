@@ -1,0 +1,40 @@
+# Merge gate for PRs whose acceptance runs outside the required checks.
+# While the `acceptance-pending` label is set, this check fails unless a trusted
+# participant commented `acceptance-released: <head SHA>` for the current head
+# commit. A new push changes the SHA and re-arms the hold. Labels and comments
+# are read live (tools/merge_hold.py). See ADR-MERGE-HOLD-20261113.
+name: Merge hold
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: merge-hold-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  merge-hold:
+    name: merge-hold
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+      issues: read
+      pull-requests: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Fail while acceptance is pending for this head commit
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: python3 -B tools/merge_hold.py
