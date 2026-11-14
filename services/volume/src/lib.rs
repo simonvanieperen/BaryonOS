@@ -17,6 +17,7 @@ pub mod client;
 pub mod service;
 pub mod table;
 pub mod upload;
+pub mod ustar;
 pub mod wire;
 
 pub use catalog_core::wire::{checksum_update, valid_name, FNV_OFFSET};

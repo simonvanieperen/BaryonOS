@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 226" role="img" aria-labelledby="title description">
   <title id="title">Baryon OS: 41% of the fixed product roadmap</title>
-  <desc id="description">41 of 100 weighted acceptance points. Zero means not started; one hundred means a complete independent OS on supported hardware. Assessed on 2026-11-13. Not a time or security score.</desc>
+  <desc id="description">41 of 100 weighted acceptance points. Zero means not started; one hundred means a complete independent OS on supported hardware. Assessed on 2026-11-14. Not a time or security score.</desc>
   <rect width="960" height="226" rx="16" fill="#f4f1eb"/>
   <text x="48" y="40" fill="#45504c" font-family="system-ui,sans-serif" font-size="14" font-weight="600" letter-spacing="2">BARYON OS · INDEPENDENT KERNEL · INDEPENDENT PRODUCT</text>
   <text x="48" y="104" fill="#173e34" font-family="system-ui,sans-serif" font-size="56" font-weight="700">41%</text>
   <text x="238" y="78" fill="#173e34" font-family="system-ui,sans-serif" font-size="21" font-weight="600">From independent kernel to daily-use OS</text>
-  <text x="238" y="105" fill="#45504c" font-family="system-ui,sans-serif" font-size="15">41 / 100 acceptance points · reassessed 2026-11-13</text>
+  <text x="238" y="105" fill="#45504c" font-family="system-ui,sans-serif" font-size="15">41 / 100 acceptance points · reassessed 2026-11-14</text>
   <rect x="66" y="136" width="828" height="19" rx="9.5" fill="#d5ddd5"/>
   <rect x="66" y="136" width="339.48" height="19" rx="9.5" fill="#207459"/>
   <g fill="#45504c" font-family="system-ui,sans-serif" font-size="13" text-anchor="middle">

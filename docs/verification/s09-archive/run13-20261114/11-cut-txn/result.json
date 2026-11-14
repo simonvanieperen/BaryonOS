@@ -1,0 +1,494 @@
+{
+  "schema_version": 1,
+  "case": "cut-txn",
+  "kernel_feature": "test-volume-cut-txn",
+  "started_utc": "2026-11-14T08:56:21.709248+00:00",
+  "duration_s": 2.8674028490002,
+  "timeout_s": 600,
+  "timed_out": false,
+  "raw_qemu_exit": -9,
+  "host_kill": true,
+  "running_before_kill": true,
+  "command": [
+    "/usr/bin/qemu-system-x86_64",
+    "-machine",
+    "pc-q35-10.0",
+    "-accel",
+    "tcg,thread=single",
+    "-cpu",
+    "qemu64",
+    "-smp",
+    "1",
+    "-m",
+    "256M",
+    "-nodefaults",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "stdio",
+    "-nic",
+    "none",
+    "-no-reboot",
+    "-drive",
+    "if=pflash,unit=0,format=raw,readonly=on,file=build/run/volume-cut-txn-f8ad954255/OVMF_CODE.fd",
+    "-drive",
+    "if=pflash,unit=1,format=raw,file=build/run/volume-cut-txn-f8ad954255/OVMF_VARS.fd",
+    "-drive",
+    "if=virtio,index=0,format=raw,readonly=on,file=fat:build/run/volume-cut-txn-f8ad954255/esp",
+    "-device",
+    "isa-debug-exit,iobase=0xf4,iosize=0x04",
+    "-drive",
+    "if=none,id=volume,format=raw,cache=writeback,readonly=off,file=build/run/volume-image-3f47908f5a/volume.img",
+    "-device",
+    "virtio-blk-pci,drive=volume,id=volblk,addr=0x5,disable-legacy=on,num-queues=1,queue-size=8,serial=NOS-M6E-TEST"
+  ],
+  "qemu_version": "QEMU emulator version 10.2.1 (Debian 1:10.2.1+ds-1ubuntu3.3)\nCopyright (c) 2003-2025 Fabrice Bellard and the QEMU Project developers",
+  "source_fingerprint_version": 3,
+  "source_sha256": "854e4d75f83b18399ec3d4c375a8017719c710ed01ecc918478f412a854f1609",
+  "volume_identity": "0b7d64b7a113448694ebfede95e8a547",
+  "parent_case": null,
+  "volume_directory": "/home/simon/projects/BaryonOS-worktrees/s09-native-archive/build/run/volume-image-3f47908f5a",
+  "before_sha256": "49c40c316234e2e4e4c8dd681a057b1b36611648896dcacba1794263b711c266",
+  "after_sha256": "ede3a54c8ed3e3012e68e11152e36eb14445da0e18f5905dc406673e96268b44",
+  "run_directory": "/home/simon/projects/BaryonOS-worktrees/s09-native-archive/build/run/volume-cut-txn-f8ad954255",
+  "kernel_sha256": "38a9b86e561cfdff55dc282898a47fe17b8ed73cdb97862127ad98026f790a36",
+  "volume_docs": {
+    "app_sha256": "9bf99df8fd8b19525a5fa50778978af0b00447da3edd4c8efa1a6cd45bf76f6c",
+    "app_elf": {
+      "entry": 1073741824,
+      "segments": [
+        {
+          "flags": 5,
+          "address": 1073741824,
+          "offset": 4096,
+          "filesz": 37714,
+          "memsz": 37714,
+          "page_start": 1073741824,
+          "page_end": 1073782784
+        },
+        {
+          "flags": 6,
+          "address": 1073807360,
+          "offset": 45056,
+          "filesz": 1248,
+          "memsz": 1248,
+          "page_start": 1073807360,
+          "page_end": 1073811456
+        },
+        {
+          "flags": 4,
+          "address": 1073823744,
+          "offset": 49152,
+          "filesz": 3392,
+          "memsz": 3392,
+          "page_start": 1073823744,
+          "page_end": 1073827840
+        }
+      ]
+    },
+    "service_sha256": "f26097715a8189ffe3d1d97f4b7f7f049e5d99ff480fe00e7c68a1c094760075",
+    "service_elf": {
+      "entry": 1073741824,
+      "segments": [
+        {
+          "flags": 5,
+          "address": 1073741824,
+          "offset": 4096,
+          "filesz": 64786,
+          "memsz": 64786,
+          "page_start": 1073741824,
+          "page_end": 1073807360
+        },
+        {
+          "flags": 6,
+          "address": 1073807360,
+          "offset": 69632,
+          "filesz": 1304,
+          "memsz": 1304,
+          "page_start": 1073807360,
+          "page_end": 1073811456
+        },
+        {
+          "flags": 4,
+          "address": 1073823744,
+          "offset": 73728,
+          "filesz": 18218,
+          "memsz": 18218,
+          "page_start": 1073823744,
+          "page_end": 1073844224
+        }
+      ]
+    }
+  },
+  "stdout": "\u001b[2J\u001b[001;001H\u001b[=3h\u001b[2J\u001b[001;001H\u001b[2J\u001b[001;001H\u001b[8;056;240t\u001b[2J\u001b[001;001HBdsDxe: loading Boot0002 \"UEFI Misc Device\" from PciRoot(0x0)/Pci(0x1,0x0)\r\nBdsDxe: starting Boot0002 \"UEFI Misc Device\" from PciRoot(0x0)/Pci(0x1,0x0)\r\nBOOT:EBS_OK\nKERNEL:ENTRY\nBOOTINFO:OK\nKS-01:PASS\nKS-02:PASS\nACPI:UNAVAILABLE:NO_DMAR\nDEVICE-EXECUTION:BLOCKED:ADAPTER_ABSENT\nKS-03:PASS\nM2:PASS\nVOLUME:MANIFEST:PASS\nVOLUME:CUT:TXN\n",
+  "stderr": "",
+  "passed": true,
+  "evidence": {},
+  "oracle": {
+    "generation": 3,
+    "clocks": [
+      3,
+      0
+    ],
+    "objects": [
+      {
+        "object": 0,
+        "revision": 1,
+        "present": true,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 1,
+        "modified": 1,
+        "request_id": 1000001,
+        "versions": [
+          {
+            "revision": 1,
+            "length": 9000,
+            "name": "Voor de crash",
+            "content_revision": 1,
+            "chunks": [
+              0,
+              1,
+              2
+            ]
+          }
+        ]
+      },
+      {
+        "object": 1,
+        "revision": 1,
+        "present": true,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 2,
+        "modified": 2,
+        "request_id": 1000062,
+        "versions": [
+          {
+            "revision": 1,
+            "length": 300,
+            "name": "Tweede",
+            "content_revision": 1,
+            "chunks": [
+              3
+            ]
+          }
+        ]
+      },
+      {
+        "object": 2,
+        "revision": 0,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 0,
+        "modified": 0,
+        "request_id": 0,
+        "versions": []
+      },
+      {
+        "object": 3,
+        "revision": 0,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 0,
+        "modified": 0,
+        "request_id": 0,
+        "versions": []
+      },
+      {
+        "object": 4,
+        "revision": 0,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 0,
+        "modified": 0,
+        "request_id": 0,
+        "versions": []
+      },
+      {
+        "object": 5,
+        "revision": 0,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 0,
+        "modified": 0,
+        "request_id": 0,
+        "versions": []
+      },
+      {
+        "object": 6,
+        "revision": 0,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 0,
+        "modified": 0,
+        "request_id": 0,
+        "versions": []
+      },
+      {
+        "object": 7,
+        "revision": 0,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 0,
+        "modified": 0,
+        "request_id": 0,
+        "versions": []
+      },
+      {
+        "object": 8,
+        "revision": 0,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 0,
+        "modified": 0,
+        "request_id": 0,
+        "versions": []
+      },
+      {
+        "object": 9,
+        "revision": 0,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 0,
+        "modified": 0,
+        "request_id": 0,
+        "versions": []
+      },
+      {
+        "object": 10,
+        "revision": 0,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 0,
+        "modified": 0,
+        "request_id": 0,
+        "versions": []
+      },
+      {
+        "object": 11,
+        "revision": 0,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 0,
+        "modified": 0,
+        "request_id": 0,
+        "versions": []
+      },
+      {
+        "object": 12,
+        "revision": 0,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 0,
+        "modified": 0,
+        "request_id": 0,
+        "versions": []
+      },
+      {
+        "object": 13,
+        "revision": 0,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 0,
+        "modified": 0,
+        "request_id": 0,
+        "versions": []
+      },
+      {
+        "object": 14,
+        "revision": 0,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 0,
+        "modified": 0,
+        "request_id": 0,
+        "versions": []
+      },
+      {
+        "object": 15,
+        "revision": 0,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 0,
+        "modified": 0,
+        "request_id": 0,
+        "versions": []
+      }
+    ],
+    "collections": [
+      {
+        "index": 1,
+        "domain": 0,
+        "present": true,
+        "revision": 1,
+        "name": "Werk"
+      },
+      {
+        "index": 2,
+        "domain": 0,
+        "present": false,
+        "revision": 0,
+        "name": ""
+      },
+      {
+        "index": 3,
+        "domain": 0,
+        "present": false,
+        "revision": 0,
+        "name": ""
+      },
+      {
+        "index": 4,
+        "domain": 0,
+        "present": false,
+        "revision": 0,
+        "name": ""
+      },
+      {
+        "index": 1,
+        "domain": 1,
+        "present": false,
+        "revision": 0,
+        "name": ""
+      },
+      {
+        "index": 2,
+        "domain": 1,
+        "present": false,
+        "revision": 0,
+        "name": ""
+      },
+      {
+        "index": 3,
+        "domain": 1,
+        "present": false,
+        "revision": 0,
+        "name": ""
+      },
+      {
+        "index": 4,
+        "domain": 1,
+        "present": false,
+        "revision": 0,
+        "name": ""
+      }
+    ],
+    "chunks_used": 4,
+    "slots": [
+      [
+        4,
+        4,
+        4,
+        4,
+        4,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ]
+    ],
+    "slot_markers": [
+      false,
+      false
+    ],
+    "digests": [
+      15993949379554206769,
+      10252960164691450465
+    ],
+    "torn_sectors": 5
+  }
+}

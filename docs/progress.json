@@ -2,13 +2,13 @@
   "schema_version": 1,
   "rubric_version": 1,
   "assessment": {
-    "date": "2026-11-13",
-    "source_commit": "e88e0ad5e36eca942d0cbf8ca4584f0921fc37cb",
+    "date": "2026-11-14",
+    "source_commit": "7191cd02a679d4464e40657f6fb8aeff3363318b",
     "assessment_basis": "source_commit",
-    "branch": "feat/s09-native-archive",
-    "task": "S09 native archive slice: kernel cases 7-11 with a portal-only archive range capability, export/restore/damaged-archive/name-conflict/full-target QEMU stages, an independent format-v1 reader and a destination decision proposal",
+    "branch": "feat/s09-ustar-export",
+    "task": "S09 proposed ustar user export: a host-tested converter from a verified format-v1 archive to POSIX ustar with pax path records, AI-review fixes and decision D6 in the destination proposal",
     "previous_score": 41,
-    "summary": "41/100 stays 41/100: S09 (2 points) remains open. On e88e0ad5 (source-v3 a924a051) the local tools/test_volume.py gate passes 14/14 QEMU stages: archive export into a disjoint, portal-only range of the disposable test image (volume service READ-only, 91 801-byte archive, all writes archive I/O); restore from only that range on a fresh image (5 objects byte-identical); refusal of an archive with one flipped byte by both guest and independent reader; restore into a domain with slot and name conflicts, a reused collection and one that keeps another name, checked against an end state derived independently from the spec rule; export into a 100-sector scope that the 180-sector archive does not fit (Full, no flush, verify and the independent reader refuse the range, volume unchanged). Evidence: docs/verification/s09-archive/NATIVE-20261113.md. The user-chosen destination and its capability are a decision proposal for the project owner (docs/implementation/S09-BACKUP-DESTINATION-PROPOSAL.md), not a contract. Not met for S09: a user-chosen target behind its own capability, documented common export formats, the encrypted NAS/provider variant, a user task. Limits: local QEMU/TCG only, CI on this head pending, one virtual disk shared by archive and volume, no hardware, no independent human audit."
+    "summary": "41/100 stays 41/100: S09 (2 points) remains open. On 7191cd02 (source-v3 854e4d75) volume_core::ustar::from_archive converts a verified format-v1 archive into a POSIX ustar stream with pax path records; it is lossy by design and not a recovery copy, and it refuses colliding paths, an uncollected object named like a declared collection, and any path whose first character is followed by a colon (the Windows drive form). 81 volume-core host tests pass with Python tarfile as the independent reader and GNU tar 1.35 extraction, nine converter mutants are killed, and the local tools/test_volume.py gate still passes 14/14 QEMU stages with an unchanged archive hash. Evidence: docs/verification/s09-archive/USTAR-20261114.md. The format is decision D6 in docs/implementation/S09-BACKUP-DESTINATION-PROPOSAL.md and stays proposed. Not met for S09: a user-chosen target behind its own capability (D1-D5 await the project owner), a confirmed export format and a native stage that writes it, the encrypted NAS/provider variant and a user task."
   },
   "tracks": [
     {

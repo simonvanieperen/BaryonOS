@@ -1,6 +1,80 @@
 # Current project status
 
-## NEXT AGENT HANDOFF — S09 native archive slice: export, restore, damaged-archive refusal, name-conflict restore and a full target pass the local volume gate (14/14) — 13 November 2026
+## NEXT AGENT HANDOFF — S09 proposed ustar user export: host-tested converter, AI-review fixes and an unchanged 14/14 volume gate — 14 November 2026
+
+**Source:** branch `feat/s09-ustar-export` from main `7d9498a8` (PR #318, merged by the project owner), draft PR #325 (no auto-merge). Tested commit `7191cd02` (source-v3 `854e4d75f83b18399ec3d4c375a8017719c710ed01ecc918478f412a854f1609`); later commits change documentation and evidence only.
+
+**Done:**
+- `volume_core::ustar::from_archive` converts a verified format-v1 archive into a POSIX ustar stream with pax `path` records. It is lossy by design and is not a recovery copy. It refuses three cases:
+  - colliding paths;
+  - an uncollected object named like a declared collection, also when that collection is empty;
+  - a path whose first character is followed by `:`, which Windows reads as a drive, not only for A–Z.
+- Spec: [S09-BACKUP-ARCHIVE.md](implementation/S09-BACKUP-ARCHIVE.md), "User export to ustar".
+- D6 (common export format) is added to the [decision proposal](implementation/S09-BACKUP-DESTINATION-PROPOSAL.md), and the format stays proposed. No capability, trust boundary or security contract changes.
+
+**Evidence:**
+- Host checks:
+  - 81 `volume-core` tests pass, including 3 ustar tests. The independent reader is Python's `tarfile`, and GNU tar 1.35 extraction is also checked.
+  - clippy, fmt and the `no_std` build pass.
+  - Nine converter mutants are killed.
+- Gate: local `tools/test_volume.py` run 13 on `7191cd02` exits 0 with 14/14 stages, in 161 s of wall time (QEMU 106.2 s). The archive hash `d75aa5c8…` is unchanged.
+- Three AI review runs were made; only the last one completed both lenses with verification, and the final drive-form fix was not reviewed again. Details: [USTAR-20261114.md](verification/s09-archive/USTAR-20261114.md).
+
+**Not run:**
+- CI on PR #325 (pending);
+- bsdtar or Windows `tar` as readers;
+- extraction on Windows or macOS;
+- a native stage that writes the export;
+- KVM and hardware;
+- an independent human audit.
+
+Main at `7d9498a8` was not gate-run by itself; run 13 contains it.
+
+**Decision received on 14 November 2026, not yet recorded in DECISIONS.md or the proposal.** The project owner approved D6(a), POSIX ustar with pax path records, as the initial interoperable S09 user-export format. The conditions are:
+- It is a lossy interchange format: not the native Materiaal format and not a recovery backup. The verified archive format stays the recovery format.
+- Unsafe or ambiguous cross-platform paths are rejected:
+  - Windows alternate-data-stream syntax;
+  - reserved device names;
+  - invalid characters;
+  - trailing dots or spaces;
+  - names that collide under case folding or Unicode normalisation.
+- Nothing is renamed silently and no overwrite is unintended. Rejected names are reported clearly. A reversible name-mapping mechanism may be proposed separately.
+- Documentation states the metadata loss, the empty-collection limits and the compatibility constraints.
+- D1–D5 stay undecided. The approval grants no new destination capability, trust boundary or encryption architecture.
+
+The owner also authorised:
+- a bounded native ustar-export test stage that uses the existing test-only permissions and fixtures;
+- updating the test orchestration and the workflow stage-count expectations, in coordination with the maintenance session on PR #323. A message listing the files was sent; no reply yet.
+
+The workflows currently disagree with the gate: `kvm-pilot.yml` expects 9 volume stage reports and `volume-acceptance.yml` names "9 QEMU runs", while the gate has run 14 stages since #318 and will run 15 with the new stage.
+
+**Open design choice before code: the collision rule.**
+- **The constraint.** The volume crate and the portal have no allocator. `core` has case mapping but no normalisation data. Every normalisation or case-fold crate checked needs `alloc`.
+- **Options:**
+  - (T1) Refuse all non-ASCII names. Sound, but it refuses "Privé" and "Notitie ✓" in the native fixture.
+  - (c) Allow only U+0020–007E, U+00A0–017F and U+2700–27BF. These blocks contain no marks, jamo or canonical singletons. Use a lower→upper→lower fold from `core`. That fold adds about 31 KB in a minimal binary, against roughly 17.8 KB of `.text` headroom in the portal, which has not been measured.
+  - (T3) A generated table of case- and normalisation-inert code points: 963 ranges on UCD 16.0.0, plus an ASCII fold.
+- **Working notes** (ignored by Git): `build/s09-ustar-notes/` in this worktree. `map-api.md` covers the API and reasons, `map-native.md` the native case 12 file map, `map-runner.md` the host runner and `map-workflows.md` the workflow lines.
+
+**Open (S09 stays open):**
+- D6 recording, D1–D5;
+- a user-chosen target behind its own capability;
+- the encrypted NAS/provider variant (B01);
+- a user task.
+
+**Next, in order:**
+1. Record D6 as `ADR-S09-USTAR-20261114` in `docs/DECISIONS.md`, quoting the conditions above. Mark D6 approved in the proposal, and the spec section as approved rather than proposed.
+2. Choose the collision rule. First measure the portal `.text` size with `core` case mapping linked.
+3. Implement `ustar::check`, which returns per-name reason bits and writes no output for a refused archive, and make `from_archive` take its result. Add host tests and mutants.
+4. Add native case 12, `archive-ustar`:
+   - `kernel/Cargo.toml` feature, the case in `kernel/src/m2/m3/volume.rs`, and the portal arm in `sdk/examples/volume-docs/src/app.rs`;
+   - `tools/build.py`, `tools/run_volume.py` (a `tarfile` oracle) and the `tools/test_volume.py` PLAN;
+   - the stage counts in both workflows, set to 15.
+5. Gate run 14 with the fingerprint taken before and after, `capture_volume.py`, an evidence note, then update PR #325.
+
+**Progress:** 41/100 → 41/100 (S09 not accepted).
+
+## Previous checkpoint — S09 native archive slice: export, restore, damaged-archive refusal, name-conflict restore and a full target pass the local volume gate (14/14), merged as #318 — 13 November 2026
 
 **Source:** branch `feat/s09-native-archive`, draft PR #318 (no auto-merge). Tested commit `e88e0ad5` (source-v3 `a924a051f18bb1044526ba641d58023356e19564b5cd3a68823f90a14a1f69af`, which includes the AI-review fixes); later commits change documentation and evidence only.
 

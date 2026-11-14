@@ -1,0 +1,657 @@
+{
+  "schema_version": 1,
+  "case": "normal",
+  "kernel_feature": "native-volume",
+  "started_utc": "2026-11-14T08:54:18.855009+00:00",
+  "duration_s": 42.25469415800001,
+  "timeout_s": 600,
+  "timed_out": false,
+  "raw_qemu_exit": 33,
+  "host_kill": false,
+  "running_before_kill": false,
+  "command": [
+    "/usr/bin/qemu-system-x86_64",
+    "-machine",
+    "pc-q35-10.0",
+    "-accel",
+    "tcg,thread=single",
+    "-cpu",
+    "qemu64",
+    "-smp",
+    "1",
+    "-m",
+    "256M",
+    "-nodefaults",
+    "-display",
+    "none",
+    "-monitor",
+    "none",
+    "-serial",
+    "stdio",
+    "-nic",
+    "none",
+    "-no-reboot",
+    "-drive",
+    "if=pflash,unit=0,format=raw,readonly=on,file=build/run/volume-normal-959490c8a2/OVMF_CODE.fd",
+    "-drive",
+    "if=pflash,unit=1,format=raw,file=build/run/volume-normal-959490c8a2/OVMF_VARS.fd",
+    "-drive",
+    "if=virtio,index=0,format=raw,readonly=on,file=fat:build/run/volume-normal-959490c8a2/esp",
+    "-device",
+    "isa-debug-exit,iobase=0xf4,iosize=0x04",
+    "-drive",
+    "if=none,id=volume,format=raw,cache=writeback,readonly=off,file=build/run/volume-image-487c80e3f9/volume.img",
+    "-device",
+    "virtio-blk-pci,drive=volume,id=volblk,addr=0x5,disable-legacy=on,num-queues=1,queue-size=8,serial=NOS-M6E-TEST"
+  ],
+  "qemu_version": "QEMU emulator version 10.2.1 (Debian 1:10.2.1+ds-1ubuntu3.3)\nCopyright (c) 2003-2025 Fabrice Bellard and the QEMU Project developers",
+  "source_fingerprint_version": 3,
+  "source_sha256": "854e4d75f83b18399ec3d4c375a8017719c710ed01ecc918478f412a854f1609",
+  "volume_identity": "8fd3ab01f69d49b9a4f5b47ee27712a0",
+  "parent_case": null,
+  "volume_directory": "/home/simon/projects/BaryonOS-worktrees/s09-native-archive/build/run/volume-image-487c80e3f9",
+  "before_sha256": "49c40c316234e2e4e4c8dd681a057b1b36611648896dcacba1794263b711c266",
+  "after_sha256": "19e2fdb3081ed07d54e5f42d152919606aac51ac07cd9dd079769ec011146bb3",
+  "run_directory": "/home/simon/projects/BaryonOS-worktrees/s09-native-archive/build/run/volume-normal-959490c8a2",
+  "kernel_sha256": "9c0e647d25f278287623fc46a159ed1390a25829be2801d09431fa6e4178447d",
+  "volume_docs": {
+    "app_sha256": "9bf99df8fd8b19525a5fa50778978af0b00447da3edd4c8efa1a6cd45bf76f6c",
+    "app_elf": {
+      "entry": 1073741824,
+      "segments": [
+        {
+          "flags": 5,
+          "address": 1073741824,
+          "offset": 4096,
+          "filesz": 37714,
+          "memsz": 37714,
+          "page_start": 1073741824,
+          "page_end": 1073782784
+        },
+        {
+          "flags": 6,
+          "address": 1073807360,
+          "offset": 45056,
+          "filesz": 1248,
+          "memsz": 1248,
+          "page_start": 1073807360,
+          "page_end": 1073811456
+        },
+        {
+          "flags": 4,
+          "address": 1073823744,
+          "offset": 49152,
+          "filesz": 3392,
+          "memsz": 3392,
+          "page_start": 1073823744,
+          "page_end": 1073827840
+        }
+      ]
+    },
+    "service_sha256": "f26097715a8189ffe3d1d97f4b7f7f049e5d99ff480fe00e7c68a1c094760075",
+    "service_elf": {
+      "entry": 1073741824,
+      "segments": [
+        {
+          "flags": 5,
+          "address": 1073741824,
+          "offset": 4096,
+          "filesz": 64786,
+          "memsz": 64786,
+          "page_start": 1073741824,
+          "page_end": 1073807360
+        },
+        {
+          "flags": 6,
+          "address": 1073807360,
+          "offset": 69632,
+          "filesz": 1304,
+          "memsz": 1304,
+          "page_start": 1073807360,
+          "page_end": 1073811456
+        },
+        {
+          "flags": 4,
+          "address": 1073823744,
+          "offset": 73728,
+          "filesz": 18218,
+          "memsz": 18218,
+          "page_start": 1073823744,
+          "page_end": 1073844224
+        }
+      ]
+    }
+  },
+  "stdout": "\u001b[2J\u001b[001;001H\u001b[=3h\u001b[2J\u001b[001;001H\u001b[2J\u001b[001;001H\u001b[8;056;240t\u001b[2J\u001b[001;001HBdsDxe: loading Boot0002 \"UEFI Misc Device\" from PciRoot(0x0)/Pci(0x1,0x0)\r\nBdsDxe: starting Boot0002 \"UEFI Misc Device\" from PciRoot(0x0)/Pci(0x1,0x0)\r\nBOOT:EBS_OK\nKERNEL:ENTRY\nBOOTINFO:OK\nKS-01:PASS\nKS-02:PASS\nACPI:UNAVAILABLE:NO_DMAR\nDEVICE-EXECUTION:BLOCKED:ADAPTER_ABSENT\nKS-03:PASS\nM2:PASS\nVOLUME:MANIFEST:PASS\nVOLUME:BROKER:MAX_COMPLETION_TICKS:00000000000000000001\nVOLUME:BROKER:TIMEOUTS:00000000000000000000\nVOLUME:READY\nVOLUME:A:DOCS:00000000000000000054\nVOLUME:A:BYTES:00000000000000875904\nVOLUME:A:COMMITS:00000000000000000046\nVOLUME:A:DIGEST:05586531168511146659\nVOLUME:A:REQUESTS:00000000000000010796\nVOLUME:A:RECOVERED_REVISION:00000000000000000000\nVOLUME:A:RECOVERED_COLLECTION:00000000000000000000\nVOLUME:A:RECOVERED_SECOND:00000000000000000000\nVOLUME:B:DOCS:00000000000000000029\nVOLUME:B:BYTES:00000000000000365155\nVOLUME:B:COMMITS:00000000000000000024\nVOLUME:B:DIGEST:16427685867521082448\nVOLUME:B:REQUESTS:00000000000000004167\nVOLUME:B:RECOVERED_REVISION:00000000000000000000\nVOLUME:SERVICE:GENERATION:00000000000000000084\nVOLUME:SERVICE:COMMITS:00000000000000000084\nVOLUME:SERVICE:CHUNK_ALLOCATIONS:00000000000000000296\nVOLUME:SERVICE:DATA_SECTORS:00000000000000002107\nVOLUME:SERVICE:TABLE_WRITES:00000000000000000084\nVOLUME:SERVICE:FLUSHES:00000000000000000155\nVOLUME:SERVICE:READ_SECTORS:00000000000000011850\nVOLUME:SERVICE:REJECTED:00000000000000000041\nVOLUME:SERVICE:ABORTED:00000000000000000002\nVOLUME:SERVICE:UNKNOWN:00000000000000000000\nVOLUME:SERVICE:TRANSACTIONS:00000000000000000001\nVOLUME:SERVICE:RESTORES:00000000000000000002\nVOLUME:BROKER:READS:00000000000000049720\nVOLUME:BROKER:WRITES:00000000000000004964\nVOLUME:BROKER:FLUSHES:00000000000000000155\nVOLUME:BROKER:TABLE_SECTOR_WRITES:00000000000000002857\nVOLUME:BROKER:DATA_SECTOR_WRITES:00000000000000002107\nVOLUME:APP_DEVICE_DENIALS:00000000000000000006\nVOLUME:CASE:NORMAL:PASS\nVOLUME:RESOURCES:PASS\nVOLUME:PASS\nM1:PASS\n",
+  "stderr": "",
+  "passed": true,
+  "evidence": {
+    "VOLUME:BROKER:MAX_COMPLETION_TICKS:": 1,
+    "VOLUME:BROKER:TIMEOUTS:": 0,
+    "VOLUME:A:DOCS:": 54,
+    "VOLUME:A:BYTES:": 875904,
+    "VOLUME:A:COMMITS:": 46,
+    "VOLUME:A:DIGEST:": 5586531168511146659,
+    "VOLUME:A:REQUESTS:": 10796,
+    "VOLUME:A:RECOVERED_REVISION:": 0,
+    "VOLUME:A:RECOVERED_COLLECTION:": 0,
+    "VOLUME:A:RECOVERED_SECOND:": 0,
+    "VOLUME:B:DOCS:": 29,
+    "VOLUME:B:BYTES:": 365155,
+    "VOLUME:B:COMMITS:": 24,
+    "VOLUME:B:DIGEST:": 16427685867521082448,
+    "VOLUME:B:REQUESTS:": 4167,
+    "VOLUME:B:RECOVERED_REVISION:": 0,
+    "VOLUME:SERVICE:GENERATION:": 84,
+    "VOLUME:SERVICE:COMMITS:": 84,
+    "VOLUME:SERVICE:CHUNK_ALLOCATIONS:": 296,
+    "VOLUME:SERVICE:DATA_SECTORS:": 2107,
+    "VOLUME:SERVICE:TABLE_WRITES:": 84,
+    "VOLUME:SERVICE:FLUSHES:": 155,
+    "VOLUME:SERVICE:READ_SECTORS:": 11850,
+    "VOLUME:SERVICE:REJECTED:": 41,
+    "VOLUME:SERVICE:ABORTED:": 2,
+    "VOLUME:SERVICE:UNKNOWN:": 0,
+    "VOLUME:SERVICE:TRANSACTIONS:": 1,
+    "VOLUME:SERVICE:RESTORES:": 2,
+    "VOLUME:BROKER:READS:": 49720,
+    "VOLUME:BROKER:WRITES:": 4964,
+    "VOLUME:BROKER:FLUSHES:": 155,
+    "VOLUME:BROKER:TABLE_SECTOR_WRITES:": 2857,
+    "VOLUME:BROKER:DATA_SECTOR_WRITES:": 2107,
+    "VOLUME:APP_DEVICE_DENIALS:": 6
+  },
+  "oracle": {
+    "generation": 84,
+    "clocks": [
+      57,
+      27
+    ],
+    "objects": [
+      {
+        "object": 0,
+        "revision": 4,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 1,
+        "modified": 57,
+        "request_id": 1005176,
+        "versions": []
+      },
+      {
+        "object": 1,
+        "revision": 3,
+        "present": true,
+        "collection": 2,
+        "tags": 0,
+        "kind": 2,
+        "created": 2,
+        "modified": 50,
+        "request_id": 1005120,
+        "versions": [
+          {
+            "revision": 1,
+            "length": 129,
+            "name": "Notitie ✓",
+            "content_revision": 1,
+            "chunks": [
+              29
+            ]
+          }
+        ]
+      },
+      {
+        "object": 2,
+        "revision": 2,
+        "present": true,
+        "collection": 1,
+        "tags": 0,
+        "kind": 0,
+        "created": 3,
+        "modified": 51,
+        "request_id": 1005124,
+        "versions": [
+          {
+            "revision": 1,
+            "length": 0,
+            "name": "Leeg",
+            "content_revision": 1,
+            "chunks": []
+          }
+        ]
+      },
+      {
+        "object": 3,
+        "revision": 42,
+        "present": true,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 5,
+        "modified": 54,
+        "request_id": 1005170,
+        "versions": [
+          {
+            "revision": 41,
+            "length": 20480,
+            "name": "Concept",
+            "content_revision": 38,
+            "chunks": [
+              21,
+              22,
+              23,
+              34,
+              35
+            ]
+          }
+        ]
+      },
+      {
+        "object": 4,
+        "revision": 4,
+        "present": true,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 46,
+        "modified": 53,
+        "request_id": 1005133,
+        "versions": [
+          {
+            "revision": 4,
+            "length": 5000,
+            "name": "Herstart",
+            "content_revision": 1,
+            "chunks": [
+              25,
+              26
+            ]
+          }
+        ]
+      },
+      {
+        "object": 5,
+        "revision": 1,
+        "present": true,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 55,
+        "modified": 55,
+        "request_id": 1005171,
+        "versions": [
+          {
+            "revision": 1,
+            "length": 65536,
+            "name": "Archief",
+            "content_revision": 1,
+            "chunks": [
+              24,
+              27,
+              30,
+              31,
+              32,
+              33,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45
+            ]
+          }
+        ]
+      },
+      {
+        "object": 6,
+        "revision": 0,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 0,
+        "modified": 0,
+        "request_id": 0,
+        "versions": []
+      },
+      {
+        "object": 7,
+        "revision": 0,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 0,
+        "modified": 0,
+        "request_id": 0,
+        "versions": []
+      },
+      {
+        "object": 8,
+        "revision": 2,
+        "present": true,
+        "collection": 1,
+        "tags": 3,
+        "kind": 7,
+        "created": 1,
+        "modified": 25,
+        "request_id": 2001022,
+        "versions": [
+          {
+            "revision": 1,
+            "length": 16384,
+            "name": "Foto-index",
+            "content_revision": 1,
+            "chunks": [
+              16,
+              17,
+              18,
+              19
+            ]
+          }
+        ]
+      },
+      {
+        "object": 9,
+        "revision": 1,
+        "present": true,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 2,
+        "modified": 2,
+        "request_id": 2000109,
+        "versions": [
+          {
+            "revision": 1,
+            "length": 300,
+            "name": "Lijst",
+            "content_revision": 1,
+            "chunks": [
+              20
+            ]
+          }
+        ]
+      },
+      {
+        "object": 10,
+        "revision": 21,
+        "present": true,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 3,
+        "modified": 23,
+        "request_id": 2001018,
+        "versions": [
+          {
+            "revision": 20,
+            "length": 4096,
+            "name": "Logboek",
+            "content_revision": 20,
+            "chunks": [
+              28
+            ]
+          }
+        ]
+      },
+      {
+        "object": 11,
+        "revision": 1,
+        "present": true,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 26,
+        "modified": 26,
+        "request_id": 2001023,
+        "versions": [
+          {
+            "revision": 1,
+            "length": 65536,
+            "name": "Groot 1",
+            "content_revision": 1,
+            "chunks": [
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61
+            ]
+          }
+        ]
+      },
+      {
+        "object": 12,
+        "revision": 1,
+        "present": true,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 27,
+        "modified": 27,
+        "request_id": 2001026,
+        "versions": [
+          {
+            "revision": 1,
+            "length": 65536,
+            "name": "Groot 2",
+            "content_revision": 1,
+            "chunks": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15
+            ]
+          }
+        ]
+      },
+      {
+        "object": 13,
+        "revision": 0,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 0,
+        "modified": 0,
+        "request_id": 0,
+        "versions": []
+      },
+      {
+        "object": 14,
+        "revision": 0,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 0,
+        "modified": 0,
+        "request_id": 0,
+        "versions": []
+      },
+      {
+        "object": 15,
+        "revision": 0,
+        "present": false,
+        "collection": 0,
+        "tags": 0,
+        "kind": 0,
+        "created": 0,
+        "modified": 0,
+        "request_id": 0,
+        "versions": []
+      }
+    ],
+    "collections": [
+      {
+        "index": 1,
+        "domain": 0,
+        "present": true,
+        "revision": 1,
+        "name": "Werk"
+      },
+      {
+        "index": 2,
+        "domain": 0,
+        "present": true,
+        "revision": 1,
+        "name": "Privé"
+      },
+      {
+        "index": 3,
+        "domain": 0,
+        "present": false,
+        "revision": 0,
+        "name": ""
+      },
+      {
+        "index": 4,
+        "domain": 0,
+        "present": false,
+        "revision": 0,
+        "name": ""
+      },
+      {
+        "index": 1,
+        "domain": 1,
+        "present": true,
+        "revision": 1,
+        "name": "Fotos"
+      },
+      {
+        "index": 2,
+        "domain": 1,
+        "present": false,
+        "revision": 0,
+        "name": ""
+      },
+      {
+        "index": 3,
+        "domain": 1,
+        "present": false,
+        "revision": 0,
+        "name": ""
+      },
+      {
+        "index": 4,
+        "domain": 1,
+        "present": false,
+        "revision": 0,
+        "name": ""
+      }
+    ],
+    "chunks_used": 62,
+    "slots": [
+      [
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84
+      ],
+      [
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83,
+        83
+      ]
+    ],
+    "slot_markers": [
+      false,
+      false
+    ],
+    "digests": [
+      5586531168511146659,
+      16427685867521082448
+    ]
+  }
+}

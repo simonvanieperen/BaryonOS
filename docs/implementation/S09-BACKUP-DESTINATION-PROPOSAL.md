@@ -117,6 +117,34 @@ destination.
 key path, which the project rules do not allow without a recorded threat
 model and dependency review.
 
+### D6 — Common export format
+
+- **(a) POSIX ustar with pax `path` records** for names that are not ASCII:
+  one file per document under a `<collection>/` path prefix. There are no
+  directory entries, so an empty collection is not exported. Host-tested as
+  `ustar::from_archive` ([S09-BACKUP-ARCHIVE.md](S09-BACKUP-ARCHIVE.md),
+  "User export to ustar").
+- **(b) ZIP.** It is just as widely opened, but needs CRC-32, a central
+  directory and a flag for UTF-8 names. No code exists.
+- **(c) Plain files without a container.** This needs a destination that
+  holds a file system, that is D1 (b).
+
+*Recommendation:* (a). It needs only a byte sum per header, with no CRC-32 or
+compression code, and its bytes are deterministic. Linux, macOS and current
+Windows ship a tar reader; only Python's `tarfile` and GNU tar have been
+tested here. It is an export, not a recovery copy: format v1 remains the only
+format that restores.
+
+*Also to decide:* whether the export refuses names that extract differently
+on Windows or macOS (a later `:`, reserved device names, trailing dots or
+spaces, case or normalisation variants). The converter refuses only colliding
+paths, an uncollected document named like a declared collection (also when
+that collection is empty), and a path whose first character is followed by `:`
+(the drive form, such as `C:` or `1:`). The collection rule already makes a
+domain with an empty collection "Werk" and an uncollected document "Werk"
+impossible to export until one of them is renamed; refusing more names would
+do the same for more domains.
+
 ## What a decision changes
 
 - If D1 (a) and D3 are accepted: a native step on a second whole virtual disk
@@ -126,12 +154,12 @@ model and dependency review.
 - If D1 (b) is accepted: a destination service specification
   (`docs/implementation/`), an ADR, an interface with negative tests, and
   native acceptance come first; the portal changes only its sink and source.
-- Either way, S09 also needs a user-facing task and documented common export
-  formats before it can be accepted.
+- Either way, S09 also needs a user-facing task, and the export format (D6)
+  confirmed and written out natively, before it can be accepted.
 
 ## Evidence boundary
 
 This proposal is design text. It has no tests. The fixture evidence for cases
 7–11 (local QEMU gate) shows that the portal-only grant, the per-operation
 rights and the archive I/O accounting work for a fixed range on one
-disposable image. It does not show any of D1 (b), D2, D4 or D5.
+disposable image. It does not show any of D1 (b), D2, D4 or D5. D6 has host tests only.

@@ -1,0 +1,250 @@
+{
+  "schema_version": 1,
+  "source_fingerprint_version": 3,
+  "source_sha256": "854e4d75f83b18399ec3d4c375a8017719c710ed01ecc918478f412a854f1609",
+  "test_inputs": {
+    "tests/test_volume_archive.py": "0aa4945a70510ddb45c8367e00c5a5995f97c7c08b8ed5138465986a5b6b3ec8",
+    "tests/test_volume_disk.py": "2166e90032a2ba97da8ea905a945428716349445228c45cca1eb87c203a1d367",
+    "tests/test_volume_harness.py": "6b68128ba171bcc9e6017d7a9c0e5641174eb881f02e2d195eb5101fbc2c8751",
+    "tests/test_volume_runner.py": "81244da3212d830102bbd7df0003604946bb34e79e90899a966d77ec9a0bf8dd"
+  },
+  "status": "completed",
+  "passed": true,
+  "host": [
+    {
+      "command": [
+        "cargo",
+        "+1.90.0",
+        "test",
+        "--locked",
+        "-p",
+        "volume-core"
+      ],
+      "exit": 0,
+      "totals": [
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s",
+        "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 22.73s",
+        "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s",
+        "test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s",
+        "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      ],
+      "stdout": "\nrunning 1 test\ntest service::upload_token_tests::exhausted_token_counter_never_wraps_or_stages_a_new_upload ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 26 tests\ntest overlong_source_count_is_a_protocol_error ... ok\ntest export_rejects_content_that_contradicts_the_service_sum ... ok\ntest invalid_domain_is_rejected ... ok\ntest overlong_count_at_end_of_stream_is_a_protocol_error ... ok\ntest duplicate_source_names_round_trip ... ok\ntest resealed_non_canonical_records_are_rejected ... ok\ntest deleted_destination_slot_is_restored_over_its_tombstone ... ok\ntest uncollected_object_without_metadata_stays_at_revision_one ... ok\ntest ustar_export_refuses_colliding_paths_and_drive_names ... ok\ntest failed_metadata_is_reported_as_bare ... ok\ntest unknown_commit_with_another_content_sum_is_not_claimed ... ok\ntest restore_after_source_loss_and_cold_recovery ... ok\ntest restore_creates_no_collection_for_a_conflicting_object ... ok\ntest unverified_truncated_restore_commits_only_checked_objects ... ok\ntest concurrent_change_makes_export_stale ... ok\ntest restore_never_overwrites_objects_names_or_collections ... ok\ntest disk_range_round_trip_keeps_bytes_and_untouched_sectors ... ok\ntest unknown_commit_is_resolved_by_stat ... ok\ntest full_target_leaves_no_archive_and_a_later_export_over_it_verifies ... ok\ntest full_or_failing_destination_never_reports_success ... ok\ntest disk_sink_reports_full_at_the_exact_boundary_and_device_errors ... ok\ntest disk_source_refuses_empty_oversized_and_damaged_ranges ... ok\ntest ustar_export_ends_only_after_the_whole_archive_checked_out ... ok\ntest ustar_export_opens_with_a_standard_reader ... ok\ntest destination_quota_stops_restore_without_touching_existing_data ... ok\ntest every_truncation_flip_and_trailing_byte_is_rejected ... ok\n\ntest result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s\n\n\nrunning 5 tests\ntest mixed_attempts_for_one_generation_are_never_combined ... ok\ntest recovery_makes_the_chosen_copy_durable_before_writing ... ok\ntest recovered_instance_continues_after_interrupted_commit ... ok\ntest first_format_crashes_reject_unrecognized_marker_prefixes_without_writes ... ok\ntest every_crash_point_recovers_to_before_or_after ... ok\n\ntest result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 22.73s\n\n\nrunning 8 tests\ntest malformed_s06_requests_are_rejected ... ok\ntest read_only_refuses_every_s06_mutation ... ok\ntest restoring_the_newest_history_version_keeps_the_oldest ... ok\ntest transactions_are_all_or_nothing ... ok\ntest stamps_do_not_reveal_other_domain_commits ... ok\ntest collections_metadata_and_filtered_listing ... ok\ntest collection_state_is_readable_and_resolves_unknown ... ok\ntest history_restore_undelete_and_purge ... ok\n\ntest result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 3 tests\ntest stale_source_does_not_start_or_overwrite_destination ... ok\ntest independent_copy_survives_source_loss_and_cold_destination_recovery ... ok\ntest quota_and_full_destination_preserve_existing_copy ... ok\n\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s\n\n\nrunning 30 tests\ntest adjacent_generation_checks_do_not_wrap_or_panic ... ok\ntest client_rejects_forged_collection_stat_replies ... ok\ntest malformed_shutdown_requests_are_rejected_without_io ... ok\ntest malformed_requests_are_rejected_without_io ... ok\ntest format_marker_preserves_recovery_of_a_torn_first_table ... ok\ntest shutdown_of_a_read_only_instance_is_refused_without_io ... ok\ntest certain_io_failures_abort_without_closing ... ok\ntest supplied_generation_does_not_skip_foreign_volume_admission ... ok\ntest committed_generation_one_with_zero_companion_is_preserved ... ok\ntest client_rejects_tampered_replies ... ok\ntest domains_are_isolated_and_listing_is_paged ... ok\ntest first_upload_marks_the_empty_volume_before_staging_content ... ok\ntest shutdown_flush_failure_is_unknown_and_closes_instance ... ok\ntest client_rejects_inconsistent_stat_and_list_replies ... ok\ntest nonzero_unrecognized_data_is_not_admitted_as_an_empty_volume ... ok\ntest empty_volume_recovers_as_generation_zero ... ok\ntest streaming_protocol_rules ... ok\ntest shutdown_flushes_once_and_refuses_later_mutations ... ok\ntest read_only_instance_refuses_mutations ... ok\ntest direct_service_constructor_cannot_claim_a_foreign_volume ... ok\ntest delete_rename_and_tombstones ... ok\ntest large_document_roundtrip_beyond_old_128_byte_limit ... ok\ntest unmarked_nonzero_table_sectors_are_not_admitted_as_empty ... ok\ntest delete_at_last_tombstone_revision_is_refused_before_publishing ... ok\ntest deleted_object_revision_from_disk_does_not_overflow ... ok\ntest corrupted_content_and_tables_fail_closed ... ok\ntest quota_and_full_are_reported_before_any_io ... ok\ntest table_sector_layout_is_canonical ... ok\ntest table_write_failure_is_unknown_and_closes_instance ... ok\ntest space_is_reused_far_beyond_record_and_capacity_limits ... ok\n\ntest result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s\n\n\nrunning 8 tests\ntest reply_token_mismatch_and_zero_begin_token_are_protocol_errors ... ok\ntest trusted_detach_releases_only_owner_and_never_reuses_old_token ... ok\ntest wrong_domain_and_malformed_token_envelopes_never_touch_staging ... ok\ntest legacy_and_token_bound_uploads_cannot_take_over_each_other ... ok\ntest domain_counters_are_independent_and_equal_tokens_keep_distinct_owners ... ok\ntest uncertainty_precedes_legacy_guard_and_cannot_resume_token_upload ... ok\ntest same_id_and_revision_cannot_replace_another_editor_or_principal ... ok\ntest stale_token_cannot_abort_or_append_a_later_upload_with_identical_id ... ok\n\ntest result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+      "stderr": "   Compiling volume-core v0.1.0 (/home/simon/projects/BaryonOS-worktrees/s09-native-archive/services/volume)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.19s\n     Running unittests src/lib.rs (target/debug/deps/volume_core-e112b1c1407f7271)\n     Running tests/archive.rs (target/debug/deps/archive-eed648e857575481)\n     Running tests/crash.rs (target/debug/deps/crash-77106d60b28a014e)\n     Running tests/history.rs (target/debug/deps/history-9717f03d94278a66)\n     Running tests/independent_copy.rs (target/debug/deps/independent_copy-8f049e5a6f0037de)\n     Running tests/service.rs (target/debug/deps/service-837f7883f53726f4)\n     Running tests/uploads.rs (target/debug/deps/uploads-a8260ad05b75ec58)\n   Doc-tests volume_core\n"
+    },
+    {
+      "command": [
+        "cargo",
+        "+1.90.0",
+        "test",
+        "--locked",
+        "--manifest-path",
+        "sdk/Cargo.toml",
+        "-p",
+        "nieuw-os-sdk-runtime"
+      ],
+      "exit": 0,
+      "totals": [
+        "test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s"
+      ],
+      "stdout": "\nrunning 16 tests\ntest clock::tests::cancellation_during_wait_is_observed_before_returning_ready ... ok\ntest clock::tests::cancelled_timer_does_not_wait ... ok\ntest clock::tests::chunking_is_bounded_by_wait_horizon ... ok\ntest clock::tests::timer_registration_accepts_boot_deadline_and_supports_shared_cancellation ... ok\ntest clock::tests::deadline_at_boot_is_immediately_expired_without_registering_a_wait ... ok\ntest clock::tests::wait_until_loops_until_timeout_across_horizon_chunks ... ok\ntest clock::tests::wait_until_returns_ready_mask_before_deadline ... ok\ntest clock::tests::wall_clock_values_always_carry_untrusted_quality ... ok\ntest memory::tests::fresh_suffix_geometry_and_raw_access_are_preserved ... ok\ntest memory::tests::malformed_or_nonprivate_kernel_extents_fail_closed ... ok\ntest message::tests::refused_native_handoff_preserves_bytes_for_capability_cleanup ... ok\ntest message::tests::received_handoff_clears_native_staging_bytes ... ok\ntest wait_tests::all_full_handle_bits_and_interests_are_encoded_without_padding ... ok\ntest wait_tests::minor_eleven_preserves_old_abi_and_return_rules ... ok\ntest wait_tests::returned_mask_is_bounded_by_count_including_empty_sleep ... ok\ntest wait_tests::wait_support_includes_known_minor_eleven_and_rejects_other_profiles ... ok\n\ntest result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 14 tests\ntest abi_check_accepts_only_existing_compatible_versions ... ok\ntest block_completion_accepts_only_the_canonical_ticket_envelope ... ok\ntest delegated_cap_descriptors_are_validated_and_preserved ... ok\ntest handle_representation_does_not_accept_sentinels_or_slot_overflow ... ok\ntest oversized_wire_lengths_never_index_or_truncate ... ok\ntest received_message_keeps_kernel_identity_and_exact_payload ... ok\ntest received_length_must_equal_the_syscall_result ... ok\ntest register_errors_remain_errors_and_secondary_errors_are_zero ... ok\ntest refused_cap_append_does_not_modify_the_message ... ok\ntest raw_send_rejects_spoofed_sender_and_every_unused_byte ... ok\ntest known_rights_do_not_allow_unknown_permission_bits ... ok\ntest received_envelope_rejects_missing_sender_reserved_and_padding ... ok\ntest sdk_messages_interoperate_with_actual_capability_engine ... ok\ntest every_payload_length_matches_the_current_kernel_decoder ... ok\n\ntest result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 3 tests\ntest abi_1_3_through_1_10_are_accepted_and_future_minors_are_not ... ok\ntest status_words_round_trip_and_reject_noncanonical_values ... ok\ntest typed_handles_keep_their_representation ... ok\n\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 4 tests\ntest none_cannot_be_substituted_by_a_successful_rtc_fallback ... ok\ntest absent_source_is_an_explicit_failure ... ok\ntest stable_forward_and_backward_sequences_do_not_establish_trust ... ok\ntest plausible_and_extreme_rtc_values_never_become_certificate_time ... ok\n\ntest result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n\nrunning 3 tests\ntest runtime/src/tls_time.rs - tls_time (line 15) - compile fail ... ok\ntest runtime/src/tls_time.rs - tls_time (line 9) - compile fail ... ok\ntest runtime/src/tls_time.rs - tls_time (line 21) - compile fail ... ok\n\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s\n\n",
+      "stderr": "    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s\n     Running unittests src/lib.rs (sdk/target/debug/deps/nieuw_os_sdk_runtime-7c1f56ec9dc44b76)\n     Running tests/message.rs (sdk/target/debug/deps/message-0a450dc62fce06c1)\n     Running tests/process.rs (sdk/target/debug/deps/process-38ccea7993822d16)\n     Running tests/tls_time.rs (sdk/target/debug/deps/tls_time-b05ea3b4a634ba2f)\n   Doc-tests nieuw_os_sdk_runtime\n"
+    },
+    {
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_volume_*.py"
+      ],
+      "exit": 0,
+      "totals": [
+        "Ran 48 tests in 0.978s",
+        "OK"
+      ],
+      "stdout": "",
+      "stderr": "................................................\n----------------------------------------------------------------------\nRan 48 tests in 0.978s\n\nOK\n"
+    }
+  ],
+  "stages": [
+    {
+      "case": "normal",
+      "parent": null,
+      "passed": true,
+      "run_directory": "/home/simon/projects/BaryonOS-worktrees/s09-native-archive/build/run/volume-normal-959490c8a2",
+      "volume_identity": "8fd3ab01f69d49b9a4f5b47ee27712a0",
+      "before_sha256": "49c40c316234e2e4e4c8dd681a057b1b36611648896dcacba1794263b711c266",
+      "after_sha256": "19e2fdb3081ed07d54e5f42d152919606aac51ac07cd9dd079769ec011146bb3",
+      "raw_qemu_exit": 33,
+      "duration_s": 42.25469415800001,
+      "error": null
+    },
+    {
+      "case": "recover",
+      "parent": "normal",
+      "passed": true,
+      "run_directory": "/home/simon/projects/BaryonOS-worktrees/s09-native-archive/build/run/volume-recover-572bb999d8",
+      "volume_identity": "8fd3ab01f69d49b9a4f5b47ee27712a0",
+      "before_sha256": "19e2fdb3081ed07d54e5f42d152919606aac51ac07cd9dd079769ec011146bb3",
+      "after_sha256": "19e2fdb3081ed07d54e5f42d152919606aac51ac07cd9dd079769ec011146bb3",
+      "raw_qemu_exit": 33,
+      "duration_s": 24.931337239000186,
+      "error": null
+    },
+    {
+      "case": "archive-export",
+      "parent": "recover",
+      "passed": true,
+      "run_directory": "/home/simon/projects/BaryonOS-worktrees/s09-native-archive/build/run/volume-archive-export-8ff72e5ef6",
+      "volume_identity": "8fd3ab01f69d49b9a4f5b47ee27712a0",
+      "before_sha256": "19e2fdb3081ed07d54e5f42d152919606aac51ac07cd9dd079769ec011146bb3",
+      "after_sha256": "2206417fa25a3804962aa95f57c45c23c2d7de7c8b9df50dc98426c703c34008",
+      "raw_qemu_exit": 33,
+      "duration_s": 5.311445862000028,
+      "error": null
+    },
+    {
+      "case": "archive-restore",
+      "parent": "archive-export",
+      "passed": true,
+      "run_directory": "/home/simon/projects/BaryonOS-worktrees/s09-native-archive/build/run/volume-archive-restore-3314984f41",
+      "volume_identity": "4a2f176a9bee4c8ca1f88c6b47640a13",
+      "before_sha256": "17ad617ff3522eb6b82dccf66f188ed6e8bf6666cee3bc4ad8a5b7fd70a14c2a",
+      "after_sha256": "51ec4abd05042743a013803ef46ec870e1870fbc8f8d7d5bd63dfac2fb0a8301",
+      "raw_qemu_exit": 33,
+      "duration_s": 4.6479433949998565,
+      "error": null
+    },
+    {
+      "case": "archive-corrupt",
+      "parent": "archive-export",
+      "passed": true,
+      "run_directory": "/home/simon/projects/BaryonOS-worktrees/s09-native-archive/build/run/volume-archive-corrupt-eec31e9f16",
+      "volume_identity": "185ea6623cfc41178317faf58a507a32",
+      "before_sha256": "22edd5a172db843c96585ddcc810d230654c42d901b13a349f4abee0dbb3b379",
+      "after_sha256": "22edd5a172db843c96585ddcc810d230654c42d901b13a349f4abee0dbb3b379",
+      "raw_qemu_exit": 33,
+      "duration_s": 2.97252752899999,
+      "error": null
+    },
+    {
+      "case": "archive-conflict",
+      "parent": "archive-export",
+      "passed": true,
+      "run_directory": "/home/simon/projects/BaryonOS-worktrees/s09-native-archive/build/run/volume-archive-conflict-8d9facd212",
+      "volume_identity": "82caeb0c3cf84093bca7f1eaa36be397",
+      "before_sha256": "17ad617ff3522eb6b82dccf66f188ed6e8bf6666cee3bc4ad8a5b7fd70a14c2a",
+      "after_sha256": "dbcc97ea58e195f7e0d35687d492aff1e2af10564212561706f11a170a07e8e4",
+      "raw_qemu_exit": 33,
+      "duration_s": 4.274939554000184,
+      "error": null
+    },
+    {
+      "case": "archive-full",
+      "parent": "archive-export",
+      "passed": true,
+      "run_directory": "/home/simon/projects/BaryonOS-worktrees/s09-native-archive/build/run/volume-archive-full-307c335bf9",
+      "volume_identity": "8fd3ab01f69d49b9a4f5b47ee27712a0",
+      "before_sha256": "19e2fdb3081ed07d54e5f42d152919606aac51ac07cd9dd079769ec011146bb3",
+      "after_sha256": "b0c5d7ae37095c12b391316a4391ae6ab3616cfb0dfba46cfd8254c906f1e628",
+      "raw_qemu_exit": 33,
+      "duration_s": 4.203246291000141,
+      "error": null
+    },
+    {
+      "case": "cut-data",
+      "parent": null,
+      "passed": true,
+      "run_directory": "/home/simon/projects/BaryonOS-worktrees/s09-native-archive/build/run/volume-cut-data-f928e8053a",
+      "volume_identity": "6a8a57dc39fc4955bcc78ea3b80f61c3",
+      "before_sha256": "49c40c316234e2e4e4c8dd681a057b1b36611648896dcacba1794263b711c266",
+      "after_sha256": "c0cb5292df11f9ab56875652cee5bd4d812616e21fa52b3422ff03610e96b2bf",
+      "raw_qemu_exit": -9,
+      "duration_s": 2.946025213999974,
+      "error": null
+    },
+    {
+      "case": "recover-cut",
+      "parent": "cut-data",
+      "passed": true,
+      "run_directory": "/home/simon/projects/BaryonOS-worktrees/s09-native-archive/build/run/volume-recover-cut-58c21c2ec1",
+      "volume_identity": "6a8a57dc39fc4955bcc78ea3b80f61c3",
+      "before_sha256": "c0cb5292df11f9ab56875652cee5bd4d812616e21fa52b3422ff03610e96b2bf",
+      "after_sha256": "c0cb5292df11f9ab56875652cee5bd4d812616e21fa52b3422ff03610e96b2bf",
+      "raw_qemu_exit": 33,
+      "duration_s": 2.240501537,
+      "error": null
+    },
+    {
+      "case": "cut-table",
+      "parent": null,
+      "passed": true,
+      "run_directory": "/home/simon/projects/BaryonOS-worktrees/s09-native-archive/build/run/volume-cut-table-e25ad6179d",
+      "volume_identity": "a260e3ad2c12434181f31691f88ea586",
+      "before_sha256": "49c40c316234e2e4e4c8dd681a057b1b36611648896dcacba1794263b711c266",
+      "after_sha256": "2d37c7c157c78fae8eec078ca869e69ffdb03ca03cd82b0b65bb3f83e39f423d",
+      "raw_qemu_exit": -9,
+      "duration_s": 3.195625478000011,
+      "error": null
+    },
+    {
+      "case": "recover-cut",
+      "parent": "cut-table",
+      "passed": true,
+      "run_directory": "/home/simon/projects/BaryonOS-worktrees/s09-native-archive/build/run/volume-recover-cut-b317e24e7f",
+      "volume_identity": "a260e3ad2c12434181f31691f88ea586",
+      "before_sha256": "2d37c7c157c78fae8eec078ca869e69ffdb03ca03cd82b0b65bb3f83e39f423d",
+      "after_sha256": "2d37c7c157c78fae8eec078ca869e69ffdb03ca03cd82b0b65bb3f83e39f423d",
+      "raw_qemu_exit": 33,
+      "duration_s": 2.267195443999981,
+      "error": null
+    },
+    {
+      "case": "cut-txn",
+      "parent": null,
+      "passed": true,
+      "run_directory": "/home/simon/projects/BaryonOS-worktrees/s09-native-archive/build/run/volume-cut-txn-f8ad954255",
+      "volume_identity": "0b7d64b7a113448694ebfede95e8a547",
+      "before_sha256": "49c40c316234e2e4e4c8dd681a057b1b36611648896dcacba1794263b711c266",
+      "after_sha256": "ede3a54c8ed3e3012e68e11152e36eb14445da0e18f5905dc406673e96268b44",
+      "raw_qemu_exit": -9,
+      "duration_s": 2.8674028490002,
+      "error": null
+    },
+    {
+      "case": "recover-cut",
+      "parent": "cut-txn",
+      "passed": true,
+      "run_directory": "/home/simon/projects/BaryonOS-worktrees/s09-native-archive/build/run/volume-recover-cut-c058b73a3e",
+      "volume_identity": "0b7d64b7a113448694ebfede95e8a547",
+      "before_sha256": "ede3a54c8ed3e3012e68e11152e36eb14445da0e18f5905dc406673e96268b44",
+      "after_sha256": "ede3a54c8ed3e3012e68e11152e36eb14445da0e18f5905dc406673e96268b44",
+      "raw_qemu_exit": 33,
+      "duration_s": 2.2504935530000694,
+      "error": null
+    },
+    {
+      "case": "corrupt",
+      "parent": null,
+      "passed": true,
+      "run_directory": "/home/simon/projects/BaryonOS-worktrees/s09-native-archive/build/run/volume-corrupt-93232b9ff7",
+      "volume_identity": "f893653d69224b178a5e1b44bcd64b0a",
+      "before_sha256": "a19398f1597865bf1f565764a5494159a0cad3c7971f41d9b3c5e41a94ca2485",
+      "after_sha256": "a19398f1597865bf1f565764a5494159a0cad3c7971f41d9b3c5e41a94ca2485",
+      "raw_qemu_exit": 33,
+      "duration_s": 1.8541442210000696,
+      "error": null
+    }
+  ]
+}

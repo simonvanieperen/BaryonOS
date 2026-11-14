@@ -200,9 +200,97 @@ archive. It does not show that a failed export invalidates an older archive
 already in the range; an older archive whose leading sectors equal the new
 stream would still verify as that older archive.
 
+## User export to ustar (proposed format, host-tested, 13 November 2026)
+
+**Status:** proposed for confirmation by the project owner (D6 in
+[S09-BACKUP-DESTINATION-PROPOSAL.md](S09-BACKUP-DESTINATION-PROPOSAL.md));
+host-tested only. It changes no capability. It has no native stage, because
+writing it out needs a destination (D1).
+
+`ustar::from_archive` converts a format-v1 archive into a POSIX.1-1988 ustar
+stream, with POSIX.1-2001 pax `path` records for names that are not ASCII.
+It is meant for common tar readers outside Baryon OS; the readers tested are
+Python's `tarfile` module and GNU tar 1.35.
+- **Layout.** Per object, in slot order, one regular file holding its bytes
+  as stored: `<collection>/<name>` for a collected object, `<name>` otherwise.
+  There are no directory entries, so an empty collection is not exported.
+  A path is at most 65 bytes and fits the 100-byte ustar name field; a
+  compile-time assertion pins this.
+- **Fixed fields.** Mode 0644, uid and gid 0, empty owner names and mtime 0.
+  Object times are a per-domain logical clock, not wall-clock time. Equal
+  archives give equal bytes.
+- **Lossy by design.** Kind, tags, revisions, times, slots and collection
+  indices are dropped. The export is for other systems, not a recovery copy,
+  and nothing restores from it. Content is not converted: the volume has no
+  registry of kinds, so a document is exported as the bytes it holds.
+- **Refusals.** These give `Invalid`, and nothing is renamed:
+  - two objects with one path;
+  - an uncollected object whose name equals a declared collection's name (a
+    file and a directory at one path). This conservative rule also refuses
+    the export when that collection is empty, although an empty collection
+    gets no directory;
+  - a path whose first character, of any kind, is followed by `:`. The Windows
+    path parser takes any single UTF-16 code unit followed by `:` as a drive,
+    not only A–Z. Such a drive exists only once it is created, for example
+    with `subst` (`+:`, `€:`); File Explorer and PowerShell do not accept it
+    ([R. Liptak, "Windows drive letters are not limited to A-Z"](https://www.ryanliptak.com/blog/windows-drive-letters-are-not-limited-to-a-z/)).
+    Where it exists, such a path can leave the extraction directory. Python's
+    `ntpath` takes any one character there as a drive, also one outside the
+    Basic Multilingual Plane, which Win32 does not; the rule refuses both.
+    Extraction on Windows was not tested. A later `:` is kept.
+- **Order of checks.** Each file is written while `archive::walk` checks its
+  object. The two end-of-archive blocks are written only after the trailer and
+  the end of the stream have been checked. Python's `tarfile` reads a stream
+  without those blocks without an error (tested), so the caller verifies the
+  same bytes first and discards the output on any error, as for restore.
+- **Names.** Object and collection names are UTF-8. They hold no control
+  characters (Unicode category Cc), no `/` or `\`, and none of the
+  bidirectional embedding, override and isolate controls U+202A–U+202E and
+  U+2066–U+2069; they are never `.` or `..`. A path therefore stays inside
+  the extraction directory on POSIX systems, and the drive rule above covers
+  the Windows drive form, including drives that are not a letter.
+  Bidirectional marks such as U+200E, U+200F and U+061C are allowed.
+- **Not handled (extraction elsewhere).** The following names export
+  unchanged, but extract differently. Whether the export should refuse them
+  is part of D6.
+  - On Windows, a later `:` names an alternate data stream.
+  - On Windows, the reserved device names (for example `NUL`) and names with
+    trailing dots or spaces are altered or lost.
+  - On Windows, other characters that it forbids, such as `?`, are not
+    accepted.
+  - Names that differ only in case, or only in Unicode normalisation (NFC
+    against NFD), collide on case-insensitive or normalisation-insensitive file
+    systems such as default macOS and Windows volumes. One file then
+    overwrites the other.
+
+**Evidence (host).** Three `volume-core` tests in
+`services/volume/tests/archive.rs`. The reader test needs `python3` and `tar`,
+and the end-block test needs `python3`; each fails when its tool is missing. The
+refusal test starts no external tool:
+- Python's standard `tarfile` module is the independent reader. It reads an
+  export that contains a collection, a multi-chunk object, an empty object and
+  the name `Notitie ✓`. Names, the pax `path` record, type, size, mode, mtime,
+  uid, gid and content all match. The system tar (GNU tar 1.35 locally)
+  extracts the same stream into a fresh directory with byte-identical files,
+  and a second conversion gives equal bytes.
+- An archive with a flipped trailer byte gives `Corrupt`. The output then
+  lacks exactly the two end-of-archive blocks, and `tarfile` still reads its
+  three files without an error.
+- Resealed archives that `verify` accepts give `Invalid` when their paths
+  collide or take the drive form: uncollected `C:x`, `1:x`, `é:x` and
+  `😀:x`, and a collection named `C:`. A name with a later colon,
+  `Plan:2`, is still exported.
+
+Nine mutants of the converter were each killed: no pax record, no
+file/directory check, no duplicate check, no drive check, a drive check for
+ASCII letters only, a checksum off by one, mode 0600, end blocks before the
+trailer check, and no content padding.
+Not checked: bsdtar and Windows `tar` as readers, extraction on Windows or
+macOS, and a native stage.
+
 **Still open for S09:** a user-chosen target behind its own capability (not a
-fixture range on the same disk); export to documented common formats; the
-encrypted NAS/provider variant; a user-facing task;
+fixture range on the same disk); confirmation of the proposed ustar export
+(D6) and a native stage that writes it out; the encrypted NAS/provider variant; a user-facing task;
 a second simultaneously attached disk (archive and volume
 share one virtual device here). Plaintext archives are used only on
 harness-assigned local test images. The destination and its capability
